@@ -15,9 +15,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 
 @Entity
-@Table(name = "user")
+@Table(name = "client")
+@JsonInclude(value = Include.NON_EMPTY)
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +37,8 @@ public class User implements Serializable{
 	@NotNull
 	private String email;
 
-	@NotNull
+    @NotNull
+    @JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	private String phone;
@@ -143,7 +150,7 @@ public class User implements Serializable{
         this.address = address;
     }
 
-    /**
+    /*/**
      * @return List<Publication> return the publications
      */
     public List<Publication> getPublications() {

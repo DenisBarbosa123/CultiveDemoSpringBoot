@@ -25,7 +25,7 @@ public class Image implements Serializable{
 
     @ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "fk_publication_id")
-	private Publication publicacation;
+	private Publication publication;
 
     /**
      * @return long return the id
@@ -60,14 +60,14 @@ public class Image implements Serializable{
      * @return Publication return the publicacation
      */
     public Publication getPublicacation() {
-        return publicacation;
+        return publication;
     }
 
     /**
      * @param publicacation the publicacation to set
      */
     public void setPublicacation(Publication publicacation) {
-        this.publicacation = publicacation;
+        this.publication = publicacation;
     }
 
 }

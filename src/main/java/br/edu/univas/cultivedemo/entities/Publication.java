@@ -13,9 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "publication")
+@JsonInclude(value = Include.NON_EMPTY)
 public class Publication implements Serializable {
 
     private static final long serialVersionUID = 1460488626476913069L;
@@ -113,7 +116,7 @@ public class Publication implements Serializable {
 
     /**
      * @return User return the user
-     */
+     *//*
     public User getUser() {
         return user;
     }
