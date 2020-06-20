@@ -25,7 +25,7 @@ public class UserService {
             return ResponseEntity.ok(user);
         } 
 
-        ResponseError error = new ResponseError("User not found with Id" + id, HttpStatus.NOT_FOUND.toString(), "It wasn't found any user with id" + id);
+        ResponseError error = new ResponseError("User not found with Id " + id, HttpStatus.NOT_FOUND.toString(), "It wasn't found any user with id " + id);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 
     }
@@ -41,16 +41,15 @@ public class UserService {
             return ResponseEntity.ok(createdUser); 
         } catch (Exception e) {
             ResponseError error = new ResponseError("An error occurred while saving the new user ", HttpStatus.BAD_REQUEST.toString(), e.toString());
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
-      
     }
 
     public ResponseEntity<Object> updateUser(User user, Long id){
         Optional<User> oldUser = userRepository.findById(id);
 
         if(!oldUser.isPresent()){
-            ResponseError error = new ResponseError("User not found with Id" + id, HttpStatus.NOT_FOUND.toString(), "It wasn't found any user with id" + id);
+            ResponseError error = new ResponseError("User not found with Id " + id, HttpStatus.NOT_FOUND.toString(), "It wasn't found any user with id " + id);
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
 
@@ -58,8 +57,8 @@ public class UserService {
             User updatedUser = userRepository.save(buildUserToUpdate(oldUser.get(), user));
             return ResponseEntity.ok(updatedUser); 
         } catch (Exception e) {
-            ResponseError error = new ResponseError("An error occurred while updating the user with Id" + id, HttpStatus.BAD_REQUEST.toString(), e.toString());
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            ResponseError error = new ResponseError("An error occurred while updating the user with Id " + id, HttpStatus.BAD_REQUEST.toString(), e.toString());
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -68,16 +67,16 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
 
         if(!user.isPresent()){
-            ResponseError error = new ResponseError("User not found with Id" + id, HttpStatus.NOT_FOUND.toString(), "It wasn't found any user with id" + id);
+            ResponseError error = new ResponseError("User not found with Id " + id, HttpStatus.NOT_FOUND.toString(), "It wasn't found any user with id " + id);
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
 
         try {
            userRepository.delete(user.get());
-            return ResponseEntity.ok(HttpStatus.NO_CONTENT); 
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            ResponseError error = new ResponseError("An error occurred while deleting the user with Id" + id, HttpStatus.BAD_REQUEST.toString(), e.toString());
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            ResponseError error = new ResponseError("An error occurred while deleting the user with Id " + id, HttpStatus.BAD_REQUEST.toString(), e.toString());
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
     }
 

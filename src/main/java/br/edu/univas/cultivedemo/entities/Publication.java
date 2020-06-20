@@ -33,7 +33,7 @@ public class Publication implements Serializable {
 
 	private LocalDateTime createdData;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "fk_product_id")
 	private Product product;
 
@@ -116,7 +116,7 @@ public class Publication implements Serializable {
 
     /**
      * @return User return the user
-     *//*
+     */
     public User getUser() {
         return user;
     }
