@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "image")
 public class Image implements Serializable{
@@ -23,8 +25,9 @@ public class Image implements Serializable{
     
     private byte[] image;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "fk_publication_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_publication_id")
+    @JsonIgnore(value = true)
 	private Publication publication;
 
     /**
@@ -59,15 +62,15 @@ public class Image implements Serializable{
     /**
      * @return Publication return the publicacation
      */
-    public Publication getPublicacation() {
+    public Publication getPublication() {
         return publication;
     }
 
     /**
-     * @param publicacation the publicacation to set
+     * @param publication the publication to set
      */
-    public void setPublicacation(Publication publicacation) {
-        this.publication = publicacation;
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 
 }

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import br.edu.univas.cultivedemo.entities.Publication;
 import br.edu.univas.cultivedemo.entities.ResponseError;
+import br.edu.univas.cultivedemo.entities.User;
 import br.edu.univas.cultivedemo.repository.PublicationRepository;
+import br.edu.univas.cultivedemo.repository.UserRepository;
 
 @Service
 public class PublicationService {
@@ -23,10 +25,14 @@ public class PublicationService {
     @Autowired
     ImageService imageService;
 
+    @Autowired
+    UserRepository userRepository;
+
 	public ResponseEntity<Object> getPublicationById(long id) {
         Optional<Publication> publication = publicationRepository.findById(id);
         
         if(publication.isPresent()) {
+            publication.get().setImages(imageService.getImages(publication.get()));
             return ResponseEntity.ok(publication.get());
         }
 
@@ -39,10 +45,20 @@ public class PublicationService {
 		return ResponseEntity.ok(publications);
 	}
 
-	public ResponseEntity<Object> createPublication(Publication newPublication) {
+	public ResponseEntity<Object> createPublication(Publication newPublication, long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isPresent()){
+            ResponseError error = new ResponseError("User with id "+ userId + "not exists", HttpStatus.NOT_FOUND.toString(), "User not found");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND); 
+        }
+
+        newPublication.setUser(user.get());
+
         try {
-            imageService.saveImages(newPublication.getImages()); // saving the images belongs to publication
             Publication createdPublication = publicationRepository.save(newPublication);
+            if(newPublication.getImages() != null){
+                imageService.saveImages(createdPublication); // saving the images belongs to publication
+            }
             return ResponseEntity.ok(createdPublication); 
         } catch (Exception e) {
             ResponseError error = new ResponseError("An error occurred while saving the new publication ", HttpStatus.BAD_REQUEST.toString(), e.toString());
@@ -61,7 +77,7 @@ public class PublicationService {
         try {
             Publication publication = buildPublicationTobeUpdated(newPublication, oldPublication.get());
             if(publication.getImages() != null) {
-                imageService.saveImages(publication.getImages());
+                imageService.saveImages(publication);
             }
 
             publicationRepository.save(publication);

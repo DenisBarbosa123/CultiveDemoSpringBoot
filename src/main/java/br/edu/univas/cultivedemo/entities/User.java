@@ -1,16 +1,13 @@
 package br.edu.univas.cultivedemo.entities;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -44,9 +41,6 @@ public class User implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_address_id")
 	private Address address;
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Publication> publications;
 
     /**
      * @return long return the id
@@ -144,20 +138,6 @@ public class User implements Serializable{
      */
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    /*/**
-     * @return List<Publication> return the publications
-     */
-    public List<Publication> getPublications() {
-        return publications;
-    }
-
-    /**
-     * @param publications the publications to set
-     */
-    public void setPublications(List<Publication> publications) {
-        this.publications = publications;
     }
 
 }
