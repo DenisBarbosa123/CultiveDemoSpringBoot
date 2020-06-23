@@ -55,13 +55,13 @@ public class PublicationService {
         newPublication.setUser(user.get());
 
         try {
-            Publication createdPublication = publicationRepository.save(newPublication);
             if(newPublication.getImages() != null){
-                imageService.saveImages(createdPublication); // saving the images belongs to publication
+                imageService.saveImages(newPublication); // saving the images belongs to publication
             }
+            Publication createdPublication = publicationRepository.save(newPublication);
             return ResponseEntity.ok(createdPublication); 
         } catch (Exception e) {
-            ResponseError error = new ResponseError("An error occurred while saving the new publication ", HttpStatus.BAD_REQUEST.toString(), e.toString());
+            ResponseError error = new ResponseError("An error occurred while saving the new publication ", HttpStatus.BAD_REQUEST.toString(), e.getMessage());
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
 	}
@@ -79,13 +79,12 @@ public class PublicationService {
             if(publication.getImages() != null) {
                 imageService.saveImages(publication);
             }
-
             publicationRepository.save(publication);
+            return ResponseEntity.ok(publicationRepository.findById(id));
         } catch (Exception e) {
             ResponseError error = new ResponseError("An error occurred while updating the publication with Id " + id, HttpStatus.BAD_REQUEST.toString(), e.toString());
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
-        return null;
 	}
 
 	public ResponseEntity<Object> deletePublicationById(long id) {

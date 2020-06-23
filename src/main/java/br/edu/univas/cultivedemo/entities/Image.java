@@ -23,9 +23,9 @@ public class Image implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    private byte[] image;
+    private String image;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_publication_id")
     @JsonIgnore(value = true)
 	private Publication publication;
@@ -47,14 +47,14 @@ public class Image implements Serializable{
     /**
      * @return byte[] return the image
      */
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
     /**
      * @param image the image to set
      */
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
